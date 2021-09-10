@@ -1,9 +1,10 @@
 @import-normalize;
 @import 'helper.scss';
+@import 'reset.scss';
 
 body {
-  margin: 0;
-  font-family: $font-family;
-  -webkit-font-smoothing: antialiased;
+  margin                 : 0;
+  font-family            : $font-family;
+  -webkit-font-smoothing : antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

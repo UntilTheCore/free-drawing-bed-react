@@ -1,0 +1,25 @@
+* {margin: 0; padding: 0;}
+* {box-sizing: border-box;}
+*::before,
+*::after {box-sizing: border-box;}
+ul,ol {list-style : none;}
+a {text-decoration: none}
+
+// 取消 a 标签在移动端
+// 1.点击时的蓝色
+// 2.长按弹出菜单
+// 3.禁止文本被选中
+a,
+a:active,
+a:hover,
+a:visited {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-user-select: none;
+  -moz-user-focus: ignore ;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  // iOS端禁止长按菜单
+  -webkit-touch-callout: none;
+  color : inherit;
+}
