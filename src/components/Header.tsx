@@ -1,4 +1,4 @@
-import { NavLink as Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "components/Logo";
 import React from "react";
@@ -6,9 +6,11 @@ import React from "react";
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: #001529;
   height: 80px;
   padding: 0 40px;
+  color: #fff;
 `;
 
 const LeftWrapper = styled.section`
@@ -18,7 +20,6 @@ const LeftWrapper = styled.section`
 
   > ul {
     display: flex;
-    color: #fff;
     font-size: 24px;
 
     > li {
@@ -31,6 +32,23 @@ const LeftWrapper = styled.section`
 
       > a.active {
         border-bottom: 1px solid #fff;
+      }
+    }
+  }
+`;
+
+const RightWrapper = styled.section`
+  > ul {
+    display: flex;
+
+    > li {
+      background-color: #fff;
+      margin: 0 6px;
+      color: #333;
+
+      a {
+        display: inline-block;
+        padding: 4px 6px;
       }
     }
   }
@@ -51,6 +69,17 @@ const Header: React.FC = () => {
       name: "About",
     },
   ];
+
+  const loginList = [
+    {
+      link: "/login",
+      name: "登录",
+    },
+    {
+      link: "/register",
+      name: "注册",
+    },
+  ];
   return (
     <HeaderWrapper>
       <LeftWrapper>
@@ -59,14 +88,24 @@ const Header: React.FC = () => {
           {linkList.map((linkItem) => {
             return (
               <li key={linkItem.link}>
-                <Link to={linkItem.link} activeClassName="active" exact>
+                <NavLink to={linkItem.link} activeClassName="active" exact>
                   {linkItem.name}
-                </Link>
+                </NavLink>
               </li>
             );
           })}
         </ul>
       </LeftWrapper>
+
+      <RightWrapper>
+        <ul>
+          {loginList.map((item) => (
+            <li>
+              <Link to={item.link}>{item.name}</Link>
+            </li>
+          ))}
+        </ul>
+      </RightWrapper>
     </HeaderWrapper>
   );
 };
