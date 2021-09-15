@@ -100,7 +100,7 @@ const Header: React.FC = () => {
       <RightWrapper>
         <ul>
           {loginList.map((item) => (
-            <li>
+            <li key={item.name} >
               <Link to={item.link}>{item.name}</Link>
             </li>
           ))}
