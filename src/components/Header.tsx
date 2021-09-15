@@ -1,8 +1,9 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "components/Logo";
 import Center from "components/Center";
+import { Button } from "antd";
 
 const HeaderWrapper = styled.div`
   background-color: #001529;
@@ -20,9 +21,13 @@ const LeftWrapper = styled.section`
   display: flex;
   align-items: center;
   width: 600px;
+  height: inherit;
 
   > ul {
     display: flex;
+    height: inherit;
+    align-items: center;
+    margin-bottom: 0;
     font-size: 24px;
 
     > li {
@@ -57,6 +62,10 @@ const RightWrapper = styled.section`
   }
 `;
 
+const StyledButton = styled(Button)`
+  margin-left: 10px;
+`;
+
 const Header: React.FC = () => {
   const linkList = [
     {
@@ -84,6 +93,8 @@ const Header: React.FC = () => {
     },
   ];
 
+  const history = useHistory();
+
   return (
     <HeaderWrapper>
       <Center>
@@ -104,13 +115,16 @@ const Header: React.FC = () => {
           </LeftWrapper>
 
           <RightWrapper>
-            <ul>
-              {loginList.map((item) => (
-                <li key={item.name}>
-                  <Link to={item.link}>{item.name}</Link>
-                </li>
-              ))}
-            </ul>
+            <Button></Button>
+            {loginList.map((item) => (
+              <StyledButton
+                key={item.name}
+                type="primary"
+                onClick={() => history.push(item.link)}
+              >
+                {item.name}
+              </StyledButton>
+            ))}
           </RightWrapper>
         </HeaderContainer>
       </Center>
