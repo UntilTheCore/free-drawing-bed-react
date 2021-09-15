@@ -4,6 +4,7 @@ import MyRouter from "router";
 import Header from "components/Header";
 import Footer from "components/Footer";
 import Loading from "components/Loading";
+import Center from "components/Center";
 
 function App() {
   return (
@@ -11,7 +12,9 @@ function App() {
       <div>
         <Header />
         <Suspense fallback={<Loading />}>
-          <MyRouter />
+          <Center>
+            <MyRouter />
+          </Center>
         </Suspense>
         <Footer />
       </div>

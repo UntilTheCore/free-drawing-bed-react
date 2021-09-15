@@ -1,15 +1,18 @@
+import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "components/Logo";
-import React from "react";
+import Center from "components/Center";
 
 const HeaderWrapper = styled.div`
+  background-color: #001529;
+`;
+
+const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #001529;
   height: 80px;
-  padding: 0 40px;
   color: #fff;
 `;
 
@@ -80,32 +83,37 @@ const Header: React.FC = () => {
       name: "注册",
     },
   ];
+
   return (
     <HeaderWrapper>
-      <LeftWrapper>
-        <Logo />
-        <ul>
-          {linkList.map((linkItem) => {
-            return (
-              <li key={linkItem.link}>
-                <NavLink to={linkItem.link} activeClassName="active" exact>
-                  {linkItem.name}
-                </NavLink>
-              </li>
-            );
-          })}
-        </ul>
-      </LeftWrapper>
+      <Center>
+        <HeaderContainer>
+          <LeftWrapper>
+            <Logo />
+            <ul>
+              {linkList.map((linkItem) => {
+                return (
+                  <li key={linkItem.link}>
+                    <NavLink to={linkItem.link} activeClassName="active" exact>
+                      {linkItem.name}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </LeftWrapper>
 
-      <RightWrapper>
-        <ul>
-          {loginList.map((item) => (
-            <li key={item.name} >
-              <Link to={item.link}>{item.name}</Link>
-            </li>
-          ))}
-        </ul>
-      </RightWrapper>
+          <RightWrapper>
+            <ul>
+              {loginList.map((item) => (
+                <li key={item.name}>
+                  <Link to={item.link}>{item.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </RightWrapper>
+        </HeaderContainer>
+      </Center>
     </HeaderWrapper>
   );
 };
