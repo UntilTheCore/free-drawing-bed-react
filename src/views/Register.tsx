@@ -36,9 +36,7 @@ const Register: React.FC = () => {
       if (!value || getFieldValue("password") === value) {
         return Promise.resolve();
       }
-      return Promise.reject(
-        new Error("The two passwords that you entered do not match!")
-      );
+      return Promise.reject("两次密码不一致");
     },
   });
 
@@ -57,7 +55,7 @@ const Register: React.FC = () => {
           label="用户名"
           name="username"
           rules={[
-            { required: true, message: "请输入用户名" },
+            { required: true, message: "请输入用户名", type: "string" },
             usernameValidator,
           ]}
         >
