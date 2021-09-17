@@ -37,4 +37,24 @@ const Auth = {
   },
 };
 
-export { Auth };
+const Uploader = {
+  add(file: AV.Object, filename: string) {
+    const item = new AV.Object("Image");
+    const avFile = new AV.File(filename, file);
+    item.set("filename", filename);
+    item.set("owner", AV.User.current());
+    item.set("url", avFile);
+    return new Promise((resolve: (serverFile: AV.Object) => void, reject) => {
+      item
+        .save()
+        .then((serverFile) => {
+          resolve(serverFile);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
+};
+
+export { Auth, Uploader };
