@@ -15,7 +15,7 @@ const RegisterWrapper = styled.div`
 
 const Title = styled.h1`
   text-align: center;
-`
+`;
 
 const Register: React.FC = () => {
   const onFinish = (values: any) => {
@@ -27,11 +27,15 @@ const Register: React.FC = () => {
   };
 
   const usernameValidator: ValidatorRule = {
-    validator: (_, value: string, callback) => {
-      if (/\W/.test(value)) return callback("不能出现字母数字下划线以外的字符");
-      if (value.length < 3) return callback("用户名长度不能小于3");
-      if (value.length > 10) return callback("用户名长度不能大于10");
-      callback();
+    validator: (rule, value) => {
+      if (value) {
+        if (/\W/.test(value))
+          return Promise.reject("用户名只能是字母数字下划线");
+        if (value.length < 3) return Promise.reject("用户名长度不能小于3");
+        if (value.length > 10) return Promise.reject("用户名长度不能大于10");
+      }
+
+      return Promise.reject("");
     },
   };
 
