@@ -1,61 +1,43 @@
-import {
-  observable,
-  action,
-  computed,
-  makeObservable,
-  runInAction,
-} from "mobx";
+import { action, makeObservable } from "mobx";
 import { Auth } from "models";
+import userStore from "store/user";
 
 type UserInfo = {
-  username: string,
-}
+  username: string;
+};
 
 class AuthStore {
-  private userInfo: UserInfo = {
-    username: "",
-  };
-
   constructor() {
-    makeObservable<AuthStore, "userInfo">(this, {
-      userInfo: observable,
-
-      setUserName: action,
+    makeObservable(this, {
       login: action,
       register: action,
       logout: action,
-
-      getUserName: computed,
     });
-  }
-
-  get getUserName() {
-    return this.userInfo.username;
-  }
-
-  setUserName(username: string) {
-    this.userInfo.username = username;
   }
 
   login(username: string, password: string) {
     return new Promise((resolve: (userInfo: UserInfo) => void, reject: any) => {
       Auth.login(username, password)
         .then((user) => {
+          userStore.pollUser();
           resolve(user.attributes.username);
         })
         .catch((error) => {
+          userStore.resetUser();
           reject(error);
         });
     });
   }
 
   register(username: string, password: string) {
-    return new Promise((resolve: (userInfo: UserInfo) => void, reject: any) => {
+    return new Promise((resolve: (username: UserInfo) => void, reject: any) => {
       Auth.register(username, password)
         .then((user) => {
+          userStore.pollUser();
           resolve(user.attributes.username);
         })
         .catch((error) => {
+          userStore.resetUser();
           reject(error);
         });
     });
@@ -63,7 +45,8 @@ class AuthStore {
 
   logout() {
     Auth.logout();
+    userStore.resetUser();
   }
 }
 
-export default AuthStore;
+export default new AuthStore();

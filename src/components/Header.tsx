@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Logo from "components/Logo";
 import Center from "components/Center";
 import { Button } from "antd";
+import { useStores } from "store";
+import { observer } from "mobx-react-lite";
 
 const HeaderWrapper = styled.div`
   background-color: #001529;
@@ -66,7 +68,7 @@ const StyledButton = styled(Button)`
   margin-left: 10px;
 `;
 
-const Header: React.FC = () => {
+const Header: React.FC = observer(() => {
   const linkList = [
     {
       link: "/",
@@ -94,6 +96,40 @@ const Header: React.FC = () => {
   ];
 
   const history = useHistory();
+  const { userStore, AuthStore } = useStores();
+
+  const handleLogout = () => {
+    AuthStore.logout();
+  };
+
+  const buttonList = (currentUser: any) => {
+    if (currentUser) {
+      // 已登录
+      return (
+        <div>
+          <span>你好，{currentUser.attributes.username}</span>
+          <StyledButton type="primary" size="small" onClick={handleLogout}>
+            注销
+          </StyledButton>
+        </div>
+      );
+    } else {
+      // 未登录
+      return (
+        <>
+          {loginList.map((item) => (
+            <StyledButton
+              key={item.name}
+              type="primary"
+              onClick={() => history.push(item.link)}
+            >
+              {item.name}
+            </StyledButton>
+          ))}
+        </>
+      );
+    }
+  };
 
   return (
     <HeaderWrapper>
@@ -114,22 +150,11 @@ const Header: React.FC = () => {
             </ul>
           </LeftWrapper>
 
-          <RightWrapper>
-            <Button></Button>
-            {loginList.map((item) => (
-              <StyledButton
-                key={item.name}
-                type="primary"
-                onClick={() => history.push(item.link)}
-              >
-                {item.name}
-              </StyledButton>
-            ))}
-          </RightWrapper>
+          <RightWrapper>{buttonList(userStore.getCurrentUser)}</RightWrapper>
         </HeaderContainer>
       </Center>
     </HeaderWrapper>
   );
-};
+});
 
 export default Header;

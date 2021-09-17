@@ -3,6 +3,7 @@ import { Form, Input, Button } from "antd";
 import styled from "styled-components";
 import type { RuleRender, ValidatorRule } from "rc-field-form/lib/interface";
 import { useStores } from "store";
+import { useHistory } from "react-router-dom";
 
 const RegisterWrapper = styled.div`
   max-width: 600px;
@@ -26,11 +27,13 @@ type FormType = {
 
 const Register: React.FC = () => {
   const { AuthStore } = useStores();
+  const history = useHistory();
+
   const onFinish = (values: FormType) => {
     AuthStore.register(values.username, values.password)
       .then(userInfo => {
         console.log("注册成功！");
-        AuthStore.setUserName(userInfo.username);
+        history.push('/')
       })
       .catch((error) => {
         console.log("注册失败");

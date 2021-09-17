@@ -1,9 +1,16 @@
 import { createContext, useContext } from "react";
-import AuthStore from "store/auth";
+import authStore from "store/auth";
+import userStore from "store/user";
 
 const context = createContext({
-  AuthStore: new AuthStore(),
+  AuthStore: authStore,
+  userStore,
 });
+
+(window as any).store = {
+  AuthStore: authStore,
+  userStore,
+};
 
 // TODO 这里可以写一篇文章
 // 通过闭包，扩大context的作用域。从而避免组件中使用context.Provider

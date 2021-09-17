@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import { Switch, Route } from "react-router-dom";
+import Home from "views/Home";
 import NoMatch from "views/NoMatch";
 
 const User = lazy(() => import("views/User"));
@@ -10,7 +11,7 @@ const Register = lazy(() => import("views/Register"));
 const MyRouter: React.FC = () => {
   return (
     <Switch>
-      <Route path="/" exact></Route>
+      <Route path="/" component={Home} exact></Route>
       <Route path="/user" exact>
         <User />
       </Route>
