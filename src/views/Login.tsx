@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Button } from "antd";
 import styled from "styled-components";
 import type { ValidatorRule } from "rc-field-form/lib/interface";
+import { useStores } from "store";
 
 const RegisterWrapper = styled.div`
   max-width: 600px;
@@ -17,9 +18,24 @@ const Title = styled.h1`
   text-align: center;
 `;
 
+type FormType = {
+  username: string;
+  password: string;
+};
+
 const Login: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  const { AuthStore } = useStores();
+
+  const onFinish = (values: FormType) => {
+    AuthStore.login(values.username, values.password)
+      .then((userInfo) => {
+        console.log("登录成功！");
+        AuthStore.setUserName(userInfo.username);
+      })
+      .catch((error) => {
+        console.log("登录失败！");
+        console.log(error);
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -35,7 +51,7 @@ const Login: React.FC = () => {
         if (value.length > 10) return Promise.reject("用户名长度不能大于10");
       }
 
-      return Promise.reject("");
+      return Promise.resolve("");
     },
   };
 

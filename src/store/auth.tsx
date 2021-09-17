@@ -5,24 +5,22 @@ import {
   makeObservable,
   runInAction,
 } from "mobx";
+import { Auth } from "models";
+
+type UserInfo = {
+  username: string,
+}
 
 class AuthStore {
-  private isLogin = false;
-  private isLoading = false;
-  private userInfo = {
+  private userInfo: UserInfo = {
     username: "",
-    password: "",
   };
 
   constructor() {
-    makeObservable<AuthStore, "isLogin" | "isLoading" | "userInfo">(this, {
-      isLogin: observable,
-      isLoading: observable,
+    makeObservable<AuthStore, "userInfo">(this, {
       userInfo: observable,
 
-      setIsLogin: action,
       setUserName: action,
-      setPassword: action,
       login: action,
       register: action,
       logout: action,
@@ -31,50 +29,40 @@ class AuthStore {
     });
   }
 
-  setIsLogin(isLogin: boolean) {
-    this.isLogin = isLogin;
+  get getUserName() {
+    return this.userInfo.username;
   }
 
   setUserName(username: string) {
     this.userInfo.username = username;
   }
 
-  get getUserName() {
-    return this.userInfo.username;
+  login(username: string, password: string) {
+    return new Promise((resolve: (userInfo: UserInfo) => void, reject: any) => {
+      Auth.login(username, password)
+        .then((user) => {
+          resolve(user.attributes.username);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   }
 
-  setPassword(password: string) {
-    this.userInfo.password = password;
-  }
-
-  login() {
-    console.log("登录中。。。");
-    this.isLoading = true;
-    setTimeout(() => {
-      console.log("登录成功");
-      // 需要异步执行的代码块需要在一个action中执行。
-      runInAction(() => {
-        this.isLogin = true;
-        this.isLoading = false;
-      });
-    }, 1000);
-  }
-
-  register() {
-    console.log("注册中。。。");
-    this.isLoading = true;
-    setTimeout(() => {
-      console.log("注册成功");
-      // 需要异步执行的代码块需要在一个action中执行。
-      runInAction(() => {
-        this.isLogin = true;
-        this.isLoading = false;
-      });
-    }, 1000);
+  register(username: string, password: string) {
+    return new Promise((resolve: (userInfo: UserInfo) => void, reject: any) => {
+      Auth.register(username, password)
+        .then((user) => {
+          resolve(user.attributes.username);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   }
 
   logout() {
-    console.log("已注销");
+    Auth.logout();
   }
 }
 
