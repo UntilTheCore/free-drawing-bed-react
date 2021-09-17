@@ -1,34 +1,32 @@
 import { makeObservable, observable, action, computed } from "mobx";
-import AV, { User } from "leancloud-storage";
-import { Auth, Uploader } from "models";
+import AV from "leancloud-storage";
+import { Uploader } from "models";
 
 class ImageStore {
-  private filename = "";
-  private file: AV.Object | undefined;
   private isUploading = false;
   private serverFile: AV.Object | undefined;
 
   constructor() {
     makeObservable<
       ImageStore,
-      "filename" | "file" | "isUploading" | "serverFile"
+      "isUploading" | "serverFile"
     >(this, {
-      filename: observable,
-      file: observable,
       isUploading: observable,
       serverFile: observable,
 
-      getFile: computed,
+      upload: action,
+
+      getServerFile: computed,
     });
   }
 
-  get getFile() {
-    return this.file;
+  get getServerFile() {
+    return this.serverFile;
   }
 
-  upload(file: AV.Object, filename: string) {
+  upload(file: any, filename: string) {
     this.isUploading = true;
-    return new Promise((resolve: (serverFile: AV.Object) => void, reject) => {
+    return new Promise((resolve: (serverFile: any) => void, reject) => {
       Uploader.add(file, filename)
         .then((serverFile) => {
           this.serverFile = serverFile;

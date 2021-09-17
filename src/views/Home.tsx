@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 import { useStores } from "store";
+import Upload from "components/Upload";
 
 const Home: React.FC = observer(() => {
   const { userStore } = useStores();
@@ -11,6 +12,7 @@ const Home: React.FC = observer(() => {
       ) : (
         <div>用户未登录</div>
       )}
+      <Upload />
     </div>
   );
 });
