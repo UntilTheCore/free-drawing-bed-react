@@ -13,6 +13,10 @@ const RegisterWrapper = styled.div`
   margin-right: auto;
 `;
 
+const Title = styled.h1`
+  text-align: center;
+`
+
 const Register: React.FC = () => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
@@ -42,6 +46,7 @@ const Register: React.FC = () => {
 
   return (
     <RegisterWrapper>
+      <Title>注册</Title>
       <Form
         name="basic"
         labelCol={{ span: 4 }}
