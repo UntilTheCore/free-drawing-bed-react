@@ -38,17 +38,37 @@ const Auth = {
 };
 
 const Uploader = {
-  add(file: AV.Object, filename: string) {
-    const item = new AV.Object("Image");
+  add(file: any, filename: string) {
+    // const item = new AV.Object("Image");
     const avFile = new AV.File(filename, file);
-    item.set("filename", filename);
-    item.set("owner", AV.User.current());
-    item.set("url", avFile);
+    // item.set("filename", filename);
+    // item.set("owner", AV.User.current());
+    // item.set("url", avFile);
     return new Promise((resolve: (serverFile: AV.Object) => void, reject) => {
-      item
-        .save()
-        .then((serverFile) => {
-          resolve(serverFile);
+      avFile
+        .save({
+          onprogress(progress: any) {
+            // TODO 做上传百分比动画
+            console.log(progress);
+          },
+        })
+        .then((serverFile: AV.File ) => {
+          console.log("File", serverFile);
+          const item = new AV.Object("Image");
+          item.set("filename", filename);
+          item.set("owner", AV.User.current());
+          item.set("url", serverFile.url());
+
+          item
+            .save()
+            .then((imageObj: AV.Object) => {
+              console.log("File & imageObject", imageObj);
+
+              resolve(imageObj);
+            })
+            .catch((error) => {
+              reject(error);
+            });
         })
         .catch((error) => {
           reject(error);
