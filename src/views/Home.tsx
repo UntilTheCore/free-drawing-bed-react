@@ -1,18 +1,20 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { useStores } from "store";
 import Upload from "components/Upload";
+import Tips from "components/Tips";
+import styled from "styled-components";
+
+const UploadWrapper = styled.section`
+  margin-top: 40px;
+`;
 
 const Home: React.FC = observer(() => {
-  const { userStore } = useStores();
   return (
     <div>
-      {userStore.getCurrentUser ? (
-        <div>欢迎你，{userStore.getCurrentUserName}</div>
-      ) : (
-        <div>用户未登录</div>
-      )}
-      <Upload />
+      <Tips>请先登录后再操作！</Tips>
+      <UploadWrapper>
+        <Upload />
+      </UploadWrapper>
     </div>
   );
 });

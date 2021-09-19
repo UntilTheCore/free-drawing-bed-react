@@ -33,7 +33,7 @@ class ImageStore {
           resolve(serverFile);
         })
         .catch((error) => {
-          console.error("上传失败");
+          console.error("上传失败",error);
           reject(error);
         })
         .finally(() => {

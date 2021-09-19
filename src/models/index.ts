@@ -39,11 +39,7 @@ const Auth = {
 
 const Uploader = {
   add(file: any, filename: string) {
-    // const item = new AV.Object("Image");
     const avFile = new AV.File(filename, file);
-    // item.set("filename", filename);
-    // item.set("owner", AV.User.current());
-    // item.set("url", avFile);
     return new Promise((resolve: (serverFile: AV.Object) => void, reject) => {
       avFile
         .save({
@@ -52,7 +48,7 @@ const Uploader = {
             console.log(progress);
           },
         })
-        .then((serverFile: AV.File ) => {
+        .then((serverFile: AV.File) => {
           console.log("File", serverFile);
           const item = new AV.Object("Image");
           item.set("filename", filename);
