@@ -17,6 +17,16 @@ const Upload: React.FC = observer( () => {
     beforeUpload: (file) => {
       console.log( file );
 
+      if ( !/(svg$)|(png$)|(jpg$)|(jpeg$)|(gif$)/ig.test( file.type ) ) {
+        message.error( "只能上传png/jpg/svg/gif格式的图片" );
+        return false;
+      }
+
+      if ( file.size > 1024 * 1024 ) {
+        message.error( "图片大小不能超过1M" );
+        return false;
+      }
+
       if ( !userStore.getCurrentUser ) {
         message.warning( "用户未登录!" );
         return false;
