@@ -70,6 +70,18 @@ const Uploader = {
       } );
     } );
   },
+  find({ page, limit }: { page: number, limit: number } = { page: 0, limit: 10 }) {
+    const imgObj = new AV.Query( "Image" );
+    imgObj.include( "owner" )
+          .equalTo( "owner", AV.User.current() )
+          .limit( limit )
+          .skip( page * limit )
+          .descending( "createAt" );
+
+    imgObj.find().then( result => {
+      console.log( result );
+    } );
+  }
 };
 
 export { Auth, Uploader };
