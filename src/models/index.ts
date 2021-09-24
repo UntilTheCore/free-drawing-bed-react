@@ -70,9 +70,7 @@ const Uploader = {
         });
     });
   },
-  find(
-    { page, limit } = { page: 0, limit: 10 }
-  ) {
+  find({ page, limit } = { page: 0, limit: 10 }) {
     const imgObj = new AV.Query("Image");
     imgObj
       .include("owner")
@@ -86,6 +84,19 @@ const Uploader = {
         console.log(result);
         resolve(result);
       });
+    });
+  },
+  delete(id: string) {
+    const todo = AV.Object.createWithoutData("Image", id);
+    return new Promise((resolve: (status: boolean) => void, reject) => {
+      todo
+        .destroy()
+        .then(() => {
+          resolve(true);
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
   },
 };

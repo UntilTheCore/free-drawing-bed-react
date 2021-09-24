@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { List, Spin } from "antd";
+import { List, Spin, Button, Popconfirm, message } from "antd";
 import InfiniteScroll from "react-infinite-scroller";
 import { useStores } from "store";
 import { observer } from "mobx-react-lite";
@@ -9,7 +9,6 @@ const HistoryWrapper = styled.div`
   .ant-list-items {
     .ant-list-item {
       div:nth-child(3) {
-        width: 550px;
       }
     }
   }
@@ -25,15 +24,25 @@ const Img = styled.img`
 const History: React.FC = observer(() => {
   const { historyStore } = useStores();
 
-  const loadMore = () => {
-    historyStore.find();
-  };
-
   useEffect(() => {
     return () => {
       historyStore.reset();
     };
   }, [historyStore]);
+
+  const loadMore = () => {
+    historyStore.find();
+  };
+
+  const deleteConfirm = (id: string) => {
+    historyStore
+      .delete(id)
+      .then(() => {
+        message.success("删除成功!");
+        historyStore.reset();
+      })
+      .catch(() => message.warning("删除失败"));
+  };
 
   return (
     <HistoryWrapper>
@@ -46,8 +55,9 @@ const History: React.FC = observer(() => {
       >
         <List
           dataSource={historyStore.getList}
-          renderItem={(item: any) => (
+          renderItem={(item: any, index) => (
             <List.Item key={item.id}>
+              <div>{index + 1}</div>
               <div>
                 <Img src={item.attributes.url} />
               </div>
@@ -58,6 +68,18 @@ const History: React.FC = observer(() => {
                 <a target="_blank" href={item.attributes.url}>
                   {item.attributes.url}
                 </a>
+              </div>
+              <div>
+                <Popconfirm
+                  title="删除操作不可逆，是否继续？"
+                  onConfirm={() => deleteConfirm(item.id)}
+                  okText="确认"
+                  cancelText="取消"
+                >
+                  <Button type="primary" danger>
+                    删除
+                  </Button>
+                </Popconfirm>
               </div>
             </List.Item>
           )}

@@ -54,7 +54,7 @@ class HistoryStore {
     Uploader.find({ page: this.page, limit: this.limit })
       .then((result) => {
         console.log(result);
-        
+
         runInAction(() => {
           this.list = this.list.concat(result);
         });
@@ -81,6 +81,16 @@ class HistoryStore {
           this.loading = false;
         });
       });
+  }
+
+  delete(id: string) {
+    return new Promise((resolve: (status: boolean) => void, reject) => {
+      Uploader.delete(id)
+        .then((status) => {
+          resolve(status);
+        })
+        .catch((error) => reject(error));
+    });
   }
 
   reset() {
