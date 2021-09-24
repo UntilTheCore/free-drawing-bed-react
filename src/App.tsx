@@ -21,7 +21,6 @@ function App() {
             <MyRouter />
           </Center>
         </Suspense>
-        <Footer />
       </div>
     </Router>
   );
