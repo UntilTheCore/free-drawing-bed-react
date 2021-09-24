@@ -75,8 +75,8 @@ const Header: React.FC = observer(() => {
       name: "Home",
     },
     {
-      link: "/user",
-      name: "User",
+      link: "/history",
+      name: "上传历史",
     },
     {
       link: "/about",

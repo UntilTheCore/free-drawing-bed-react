@@ -8,24 +8,27 @@ class ImageStore {
   private uploadPercent = 0;
 
   constructor() {
-    makeObservable<ImageStore,
-      "isUploading" | "serverFile" | "uploadPercent">( this, {
-      isUploading: observable,
-      serverFile: observable,
-      uploadPercent: observable,
+    makeObservable<ImageStore, "isUploading" | "serverFile" | "uploadPercent">(
+      this,
+      {
+        isUploading: observable,
+        serverFile: observable,
+        uploadPercent: observable,
 
-      upload: action,
+        upload: action,
 
-      getServerFile: computed,
-      getIsUploading: computed,
-      getPercent: computed,
-    } );
+        getServerFile: computed,
+        getIsUploading: computed,
+        getPercent: computed,
+      }
+    );
   }
 
   get getServerFile() {
     return this.serverFile;
   }
 
+  /** 获取上传状态，true: 还在上传中 */
   get getIsUploading() {
     return this.isUploading;
   }
@@ -38,23 +41,24 @@ class ImageStore {
     this.isUploading = true;
     this.serverFile = undefined;
 
-    return new Promise( (resolve: (serverFile: any) => void, reject) => {
-      Uploader.add( file, filename, (progress) => {
-        this.uploadPercent = Math.round( progress.percent );
-      } ).then( (serverFile) => {
-        this.serverFile = serverFile;
-        resolve( serverFile );
-      } ).catch( (error) => {
-        console.error( "上传失败", error );
-        reject( error );
-      } ).finally( () => {
-        this.isUploading = false;
-        this.uploadPercent = 0;
-      } );
-    } );
+    return new Promise((resolve: (serverFile: any) => void, reject) => {
+      Uploader.add(file, filename, (progress) => {
+        this.uploadPercent = Math.round(progress.percent);
+      })
+        .then((serverFile) => {
+          this.serverFile = serverFile;
+          resolve(serverFile);
+        })
+        .catch((error) => {
+          console.error("上传失败", error);
+          reject(error);
+        })
+        .finally(() => {
+          this.isUploading = false;
+          this.uploadPercent = 0;
+        });
+    });
   }
-
-
 }
 
 export default new ImageStore();

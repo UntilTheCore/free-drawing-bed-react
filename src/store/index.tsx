@@ -2,11 +2,13 @@ import { createContext, useContext } from "react";
 import authStore from "store/auth";
 import userStore from "store/user";
 import imageStore from "store/image";
+import historyStore from "store/history";
 
 const context = createContext({
   AuthStore: authStore,
   userStore,
   imageStore,
+  historyStore,
 });
 
 // HACK store 内容数据附加到 window 上进行数据查看和跟踪
@@ -14,6 +16,7 @@ const context = createContext({
   AuthStore: authStore,
   userStore,
   imageStore,
+  historyStore,
 };
 
 // TODO 这里可以写一篇文章
