@@ -68,7 +68,7 @@ const StyledButton = styled(Button)`
   margin-left: 10px;
 `;
 
-const Header: React.FC = observer(() => {
+const Header: <T>(props?: React.FC<T>) => React.FC<T> = () => observer(() => {
   const linkList = [
     {
       link: "/",
