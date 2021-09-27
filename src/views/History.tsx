@@ -65,7 +65,7 @@ const History: React.FC = observer(() => {
                 <h5>{item.attributes.filename}</h5>
               </div>
               <div>
-                <a target="_blank" href={item.attributes.url}>
+                <a target="_blank" href={item.attributes.url} rel="noreferrer">
                   {item.attributes.url}
                 </a>
               </div>
